@@ -1,0 +1,16 @@
+Hi Gill,
+
+Couple of fixes:
+
+1. On the Question node: More (...) > Properties > Entity recognition > check "Include file metadata".
+
+2. Then on the Action node input, switch to fx and drop this in:
+{ contentBytes: Topic.varEvidenceZipFolder.Content, name: Topic.varEvidenceZipFolder.Name }
+
+Your second attempt broke because the whole variable went in, rather than .Content and .Name.
+
+Trigger is fine as-is, "File content (Record)" is expected.
+
+Zip side: run base64ToBinary() in the flow, drop the file into SharePoint, then Extract archive to folder.
+
+Only works on Copilot Studio 2025.7.2 or above.
