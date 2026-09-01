@@ -1,0 +1,20 @@
+Thanks, that helps.
+
+Short answer: a SharePoint document library is the right home for this, not the network drive. You would need it approved for confidential data first, which is a request raised with the site owners. Happy to point you to who handles that.
+
+Once the files are there, Power Query does the scrubbing once and the result is published as one model. Your templates connect to that model from Excel, so nobody rebuilds it and one refresh updates everyone.
+
+And because it sits in SharePoint, the same data can feed Power BI workspaces, semantic models, Fabric or automation later without copying anything.
+
+Fifteen minutes on a call and we can go through it. I am free now if that suits.
+
+
+Thanks, that is useful.
+
+My suggestion is a SharePoint document library rather than the network drive. It does need approval for confidential data, which the site owners handle, and I can share the details on how to raise that.
+
+After that, scrubbing happens once in Power Query and the output becomes a single shared model. Your project templates connect straight to it in Excel, so the model is built once and everyone refreshes from the same place.
+
+Same data can also be used by Power BI workspaces, Fabric or automation later, no copies needed.
+
+Worth fifteen minutes on a call. Send me a time, or I can join now.
