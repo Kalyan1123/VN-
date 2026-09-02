@@ -1,0 +1,32 @@
+Fix 1 — Screen OnVisible
+
+Remove the trailing .Value:
+
+Set(varCalRegion, LookUp(Choices('Meeting Notes'.Region), Text(Value) = "EMEA"));
+Set(varShowModal, false);
+Select(lblLoadData)
+
+Set this, then click off the property so Studio re-infers the type. Errors 1–3 should drop.
+
+Fix 2 — lblSaveBtn.OnSelect, the Status line
+
+Replace Status: A.StaTxt with:
+
+'Status (psquad_status)': LookUp(Choices('Meeting Action Items'.'Status (psquad_status)'), Text(Value) = A.StaTxt).Value
+
+Full child block:
+
+ForAll(
+    Filter(colEditActions, !Removed, !IsBlank(Trim(Descr))) As A,
+    Patch(
+        'Meeting Action Items',
+        Coalesce(A.ActionRec, Defaults('Meeting Action Items')),
+        {
+            Name: A.Descr,
+            'Action Description': A.Descr,
+            Meeting: varSavedMeeting,
+            'Assigned To': A.Assignee,
+            'Status (psquad_status)': LookUp(Choices('Meeting Action Items'.'Status (psquad_status)'), Text(Value) = A.StaTxt).Value
+        }
+    )
+);
