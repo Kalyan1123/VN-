@@ -1,0 +1,11 @@
+- txtRecap:
+    Control: ModernTextInput@1.1.1
+    Properties:
+      X: =407
+      Y: =206
+      Width: =552
+      Height: =140
+      Visible: =varShowModal
+      Type: =TextInputType.Multiline
+      Default: =varCurrentMeeting.'Meeting Recap'
+      Placeholder: ="Paste meeting summary, discussion points and decisions"
