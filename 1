@@ -1,0 +1,25 @@
+1. lblCellHit.OnSelect — the Stat line
+Stat: Text(A.'Status (psquad_status)'),
+2. drpStatus.Items
+["In-Progress", "Completed"]
+3. lblAddAction.OnSelect — the Stat line
+Stat: "In-Progress",
+4. lblSaveBtn.OnSelect — restore the Status line
+'Status (psquad_status)': LookUp(Choices('Meeting Action Items'.'Status (psquad_status)'), Text(Value) = A.Stat).Value
+
+Whole Patch block for the child records:
+
+ForAll(
+    Filter(colEditActions, !Removed, !IsBlank(Trim(Descr))) As A,
+    Patch(
+        'Meeting Action Items',
+        Coalesce(A.ActionRec, Defaults('Meeting Action Items')),
+        {
+            Name: A.Descr,
+            'Action Description': A.Descr,
+            Meeting: varSavedMeeting,
+            'Assigned To': A.Assignee,
+            'Status (psquad_status)': LookUp(Choices('Meeting Action Items'.'Status (psquad_status)'), Text(Value) = A.Stat).Value
+        }
+    )
+);
