@@ -1,0 +1,31 @@
+1. Screen OnVisible
+Set(varCalRegion, LookUp(Choices('Meeting Notes'.Region), Text(Value) = "EMEA").Value);
+Set(varShowModal, false);
+Select(lblLoadData)
+
+Text(Value) converts the OptionSetValue to its label so the comparison works. .Value at the end hands back an OptionSetValue, which is what Patch and Filter both need.
+
+2. lblCellHit.OnSelect (in the component)
+Set(varCalSelected, ThisItem.CellDate);
+If(
+    !ThisItem.InMonth,
+    Set(varCalMonth, Date(Year(ThisItem.CellDate), Month(ThisItem.CellDate), 1))
+);
+Set(varCurrentMeeting, LookUp(colMeetings, DateValue(Text('Meeting Date', "yyyy-mm-dd")) = ThisItem.CellDate));
+ClearCollect(
+    colEditActions,
+    ForAll(
+        varCurrentMeeting.'Meeting Action Items' As A,
+        {
+            TempID: GUID(),
+            ActionRec: A,
+            Descr: A.'Action Description',
+            Assignee: A.'Assigned To',
+            Stat: Text(A.Status),
+            Removed: false
+        }
+    )
+);
+Set(varShowModal, true)
+
+Meeting = varCurrentMeeting compared Record to Record — not allowed. Relationship navigation replaces it and kills the delegation warning too.
