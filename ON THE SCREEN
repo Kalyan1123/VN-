@@ -1,0 +1,440 @@
+- recScrim:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =Parent.Height
+      Visible: =varShowModal
+      Fill: =RGBA(0, 0, 0, 0.45)
+      BorderColor: =RGBA(0, 0, 0, 0)
+- recModalCard:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =383
+      Y: =60
+      Width: =600
+      Height: =648
+      Visible: =varShowModal
+      Fill: =RGBA(255, 255, 255, 1)
+      BorderColor: =RGBA(225, 229, 234, 1)
+- lblModalMeta:
+    Control: Label@2.5.1
+    Properties:
+      X: =407
+      Y: =76
+      Width: =440
+      Height: =20
+      Visible: =varShowModal
+      Size: =9
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(107, 119, 133, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      VerticalAlign: =VerticalAlign.Middle
+      Text: |
+        =Text(varCalSelected, "dddd, mmmm d, yyyy") & "   |   " & varCalRegion.Value
+- lblModalTitle:
+    Control: Label@2.5.1
+    Properties:
+      X: =405
+      Y: =98
+      Width: =460
+      Height: =32
+      Visible: =varShowModal
+      Text: =varCalRegion.Value & " Bi-Weekly Sync"
+      Size: =15
+      FontWeight: =FontWeight.Semibold
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(15, 23, 42, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      VerticalAlign: =VerticalAlign.Middle
+- icoModalClose:
+    Control: Classic/Icon@2.5.0
+    Properties:
+      X: =941
+      Y: =78
+      Width: =20
+      Height: =20
+      Visible: =varShowModal
+      Icon: =Icon.Cancel
+      Color: =RGBA(107, 119, 133, 1)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      OnSelect: |
+        =Set(varShowModal, false);
+        Clear(colEditActions);
+        Set(varCurrentMeeting, Blank())
+- recHeaderRule:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =383
+      Y: =144
+      Width: =600
+      Height: =1
+      Visible: =varShowModal
+      Fill: =RGBA(239, 242, 246, 1)
+      BorderColor: =RGBA(0, 0, 0, 0)
+- lblRecapHeader:
+    Control: Label@2.5.1
+    Properties:
+      X: =405
+      Y: =158
+      Width: =340
+      Height: =24
+      Visible: =varShowModal
+      Text: ="Meeting Recap / Copilot Notes"
+      Size: =11
+      FontWeight: =FontWeight.Bold
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(21, 101, 192, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      VerticalAlign: =VerticalAlign.Middle
+- lblRecapSub:
+    Control: Label@2.5.1
+    Properties:
+      X: =407
+      Y: =182
+      Width: =500
+      Height: =18
+      Visible: =varShowModal
+      Text: ="Paste the full Teams Copilot summary here."
+      Size: =9
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(138, 148, 166, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      VerticalAlign: =VerticalAlign.Middle
+- txtRecap:
+    Control: ModernTextInput@1.1.1
+    Properties:
+      X: =407
+      Y: =206
+      Width: =552
+      Height: =140
+      Visible: =varShowModal
+      Default: =varCurrentMeeting.'Meeting Recap'
+      Placeholder: ="Paste meeting summary, discussion points and decisions"
+- lblActionsHeader:
+    Control: Label@2.5.1
+    Properties:
+      X: =405
+      Y: =362
+      Width: =240
+      Height: =24
+      Visible: =varShowModal
+      Text: ="Action Items"
+      Size: =11
+      FontWeight: =FontWeight.Bold
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(21, 101, 192, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      VerticalAlign: =VerticalAlign.Middle
+- recAddAction:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =855
+      Y: =360
+      Width: =104
+      Height: =28
+      Visible: =varShowModal
+      Fill: =RGBA(232, 241, 252, 1)
+      BorderColor: =RGBA(0, 0, 0, 0)
+- lblAddAction:
+    Control: Label@2.5.1
+    Properties:
+      X: =855
+      Y: =360
+      Width: =104
+      Height: =28
+      Visible: =varShowModal
+      Text: ="+ Add Action"
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(21, 101, 192, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+      OnSelect: |
+        =Collect(
+            colEditActions,
+            {
+                TempID: GUID(),
+                ActionRec: Blank(),
+                Descr: "",
+                Assignee: Blank(),
+                Stat: LookUp(Choices('Meeting Action Items'.Status), Value = "Not Started"),
+                Removed: false
+            }
+        )
+- galActions:
+    Control: Gallery@2.15.0
+    Variant: BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0
+    Properties:
+      X: =399
+      Y: =398
+      Width: =568
+      Height: =232
+      Visible: =varShowModal
+      TemplateSize: =140
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      BorderColor: =RGBA(0, 0, 0, 0)
+      Items: =Filter(colEditActions, !Removed)
+    Children:
+      - recActionCard:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =4
+            Y: =2
+            Width: =552
+            Height: =132
+            Fill: =RGBA(250, 251, 252, 1)
+            BorderColor: =RGBA(229, 233, 239, 1)
+      - lblLblDesc:
+          Control: Label@2.5.1
+          Properties:
+            X: =18
+            Y: =8
+            Width: =220
+            Height: =16
+            Text: ="ACTION DESCRIPTION"
+            Size: =7
+            FontWeight: =FontWeight.Bold
+            Font: =Font.'Segoe UI'
+            Color: =RGBA(107, 119, 133, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            BorderColor: =RGBA(0, 0, 0, 0)
+            VerticalAlign: =VerticalAlign.Middle
+      - txtActionDesc:
+          Control: ModernTextInput@1.1.1
+          Properties:
+            X: =18
+            Y: =26
+            Width: =460
+            Height: =32
+            Default: =ThisItem.Descr
+            Placeholder: ="What needs to be done"
+            OnChange: |
+              =Patch(
+                  colEditActions,
+                  LookUp(colEditActions, TempID = ThisItem.TempID),
+                  { Descr: Self.Value }
+              )
+      - icoDeleteAction:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            X: =498
+            Y: =34
+            Width: =18
+            Height: =18
+            Icon: =Icon.Trash
+            Color: =RGBA(220, 38, 38, 1)
+            BorderColor: =RGBA(0, 0, 0, 0)
+            OnSelect: |
+              =Patch(
+                  colEditActions,
+                  LookUp(colEditActions, TempID = ThisItem.TempID),
+                  { Removed: true }
+              )
+      - lblLblAssigned:
+          Control: Label@2.5.1
+          Properties:
+            X: =18
+            Y: =64
+            Width: =200
+            Height: =16
+            Text: ="ASSIGNED TO"
+            Size: =7
+            FontWeight: =FontWeight.Bold
+            Font: =Font.'Segoe UI'
+            Color: =RGBA(107, 119, 133, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            BorderColor: =RGBA(0, 0, 0, 0)
+            VerticalAlign: =VerticalAlign.Middle
+      - cmbAssigned:
+          Control: ModernCombobox@1.1.1
+          Properties:
+            X: =18
+            Y: =82
+            Width: =250
+            Height: =38
+            Items: ='LCM Directory'
+            SelectMultiple: =false
+            DefaultSelectedItems: =If(IsBlank(ThisItem.Assignee), Blank(), Table(ThisItem.Assignee))
+            OnChange: |
+              =Patch(
+                  colEditActions,
+                  LookUp(colEditActions, TempID = ThisItem.TempID),
+                  { Assignee: Self.Selected }
+              )
+      - lblLblStatus:
+          Control: Label@2.5.1
+          Properties:
+            X: =288
+            Y: =64
+            Width: =200
+            Height: =16
+            Text: ="STATUS"
+            Size: =7
+            FontWeight: =FontWeight.Bold
+            Font: =Font.'Segoe UI'
+            Color: =RGBA(107, 119, 133, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            BorderColor: =RGBA(0, 0, 0, 0)
+            VerticalAlign: =VerticalAlign.Middle
+      - drpStatus:
+          Control: ModernDropdown@1.0.2
+          Properties:
+            X: =288
+            Y: =82
+            Width: =250
+            Height: =38
+            Items: =Choices('Meeting Action Items'.Status)
+            Default: =ThisItem.Stat
+            OnChange: |
+              =Patch(
+                  colEditActions,
+                  LookUp(colEditActions, TempID = ThisItem.TempID),
+                  { Stat: Self.Selected }
+              )
+- recFooterRule:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =383
+      Y: =644
+      Width: =600
+      Height: =1
+      Visible: =varShowModal
+      Fill: =RGBA(239, 242, 246, 1)
+      BorderColor: =RGBA(0, 0, 0, 0)
+- recCancelBtn:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =703
+      Y: =660
+      Width: =104
+      Height: =36
+      Visible: =varShowModal
+      Fill: =RGBA(255, 255, 255, 1)
+      BorderColor: =RGBA(216, 222, 230, 1)
+- lblCancelBtn:
+    Control: Label@2.5.1
+    Properties:
+      X: =703
+      Y: =660
+      Width: =104
+      Height: =36
+      Visible: =varShowModal
+      Text: ="Cancel"
+      Size: =10
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(31, 41, 55, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+      OnSelect: |
+        =Set(varShowModal, false);
+        Clear(colEditActions);
+        Set(varCurrentMeeting, Blank())
+- recSaveBtn:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =819
+      Y: =660
+      Width: =140
+      Height: =36
+      Visible: =varShowModal
+      Fill: =RGBA(21, 101, 192, 1)
+      BorderColor: =RGBA(0, 0, 0, 0)
+- lblSaveBtn:
+    Control: Label@2.5.1
+    Properties:
+      X: =819
+      Y: =660
+      Width: =140
+      Height: =36
+      Visible: =varShowModal
+      Text: ="Save Meeting Notes"
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Font: =Font.'Segoe UI'
+      Color: =RGBA(255, 255, 255, 1)
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      Align: =Align.Center
+      VerticalAlign: =VerticalAlign.Middle
+      OnSelect: |
+        =Set(
+            varSavedMeeting,
+            Patch(
+                'Meeting Notes',
+                Coalesce(varCurrentMeeting, Defaults('Meeting Notes')),
+                {
+                    Title: varCalRegion.Value & " Bi-Weekly Sync",
+                    'Meeting Date': varCalSelected,
+                    Region: varCalRegion,
+                    'Meeting Recap': txtRecap.Value
+                }
+            )
+        );
+        ForAll(
+            Filter(colEditActions, !Removed, !IsBlank(Trim(Descr))) As A,
+            Patch(
+                'Meeting Action Items',
+                Coalesce(A.ActionRec, Defaults('Meeting Action Items')),
+                {
+                    Name: A.Descr,
+                    'Action Description': A.Descr,
+                    Meeting: varSavedMeeting,
+                    'Assigned To': A.Assignee,
+                    Status: A.Stat
+                }
+            )
+        );
+        ForAll(
+            Filter(colEditActions, Removed, !IsBlank(ActionRec)) As D,
+            Remove('Meeting Action Items', D.ActionRec)
+        );
+        If(
+            IsEmpty(Errors('Meeting Notes')) && IsEmpty(Errors('Meeting Action Items')),
+            Select(lblLoadData);
+            Set(varShowModal, false);
+            Clear(colEditActions);
+            Notify("Meeting notes saved.", NotificationType.Success, 2000),
+            Notify(
+                "Save failed. " & First(Errors('Meeting Notes')).Message,
+                NotificationType.Error
+            )
+        )
+- lblLoadData:
+    Control: Label@2.5.1
+    Properties:
+      X: =0
+      Y: =0
+      Width: =1
+      Height: =1
+      Visible: =false
+      Text: =""
+      Fill: =RGBA(0, 0, 0, 0)
+      BorderColor: =RGBA(0, 0, 0, 0)
+      OnSelect: |
+        =ClearCollect(
+            colMeetings,
+            Filter('Meeting Notes', Region = varCalRegion)
+        );
+        ClearCollect(
+            colCalEvents,
+            ForAll(
+                colMeetings As M,
+                {
+                    EventDate: DateValue(Text(M.'Meeting Date', "yyyy-mm-dd")),
+                    Title: M.Title
+                }
+            )
+        )
