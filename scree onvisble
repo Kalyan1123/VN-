@@ -1,0 +1,3 @@
+Set(varCalRegion, LookUp(Choices('Meeting Notes'.Region), Value = "EMEA"));
+Set(varShowModal, false);
+Select(lblLoadData)
