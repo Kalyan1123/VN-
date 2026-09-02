@@ -8,3 +8,14 @@ ClearCollect(
     )
 );
 Set(varShowModal, true)
+
+
+
+
+lblRegionPill.Text — varCalRegion is now a Choice record, not text:
+
+=Upper(varCalRegion.Value) & " REGION"
+
+galCalendar.Items — swap the demo table for real data:
+
+_src: colCalEvents
