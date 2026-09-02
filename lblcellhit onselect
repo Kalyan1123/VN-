@@ -1,0 +1,10 @@
+Set(varCurrentMeeting, LookUp(colMeetings, DateValue(Text('Meeting Date',"yyyy-mm-dd")) = ThisItem.CellDate));
+ClearCollect(
+    colEditActions,
+    ForAll(
+        Filter('Meeting Action Items', Meeting = varCurrentMeeting) As A,
+        { TempID: GUID(), ActionRec: A, Descr: A.'Action Description',
+          Assignee: A.'Assigned To', Stat: A.Status, Removed: false }
+    )
+);
+Set(varShowModal, true)
