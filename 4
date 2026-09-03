@@ -1,0 +1,24 @@
+A. lblAddAction → OnSelect
+
+Click the property, Ctrl+A, paste:
+
+Collect(
+    colEditActions,
+    {
+        TempID: GUID(),
+        ActionRec: Blank(),
+        Descr: "",
+        Assignee: Blank(),
+        StatusText: "In-Progress",
+        Removed: false
+    }
+)
+B. drpStatus → ItemDisplayText
+
+Ctrl+A, Delete. Leave it blank. Don't type anything.
+
+C. drpStatus → Default
+
+Ctrl+A, paste:
+
+ThisItem.StatusText
