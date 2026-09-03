@@ -1,0 +1,14 @@
+heck the error count on lblSaveBtn now. Those three should be gone.
+
+If any survive, wrap the display uses in Text():
+
+Control	Property
+lblSaveBtn	Title: Text(varCalRegion.Value) & " Bi-Weekly Sync",
+lblModalTitle	Text(varCalRegion.Value) & " Bi-Weekly Sync"
+lblModalMeta	Text(varCalSelected, "dddd, mmmm d, yyyy") & " | " & Text(varCalRegion.Value)
+lblRegionPill	Upper(Text(varCalRegion.Value)) & " REGION"
+
+Leave these two alone — they need the whole record, not the text:
+
+Region: varCalRegion                          // in lblSaveBtn Patch
+Filter('Meeting Notes', Region = varCalRegion) // in lblLoadData
