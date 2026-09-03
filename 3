@@ -12,3 +12,22 @@ Leave these two alone — they need the whole record, not the text:
 
 Region: varCalRegion                          // in lblSaveBtn Patch
 Filter('Meeting Notes', Region = varCalRegion) // in lblLoadData
+
+
+
+
+
+ClearCollect(
+    colMeetings,
+    Filter('Meeting Notes', Region = varCalRegion.Value)
+);
+ClearCollect(
+    colCalEvents,
+    ForAll(
+        colMeetings As M,
+        {
+            EventDate: DateValue(Text(M.'Meeting Date', "yyyy-mm-dd")),
+            Title: M.Title
+        }
+    )
+)
