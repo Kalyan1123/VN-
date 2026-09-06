@@ -1,0 +1,5 @@
+Set(varCalRegion, Self.Selected);
+Set(varShowModal, false);
+Set(varCurrentMeeting, Blank());
+Clear(colEditActions);
+Select(lblLoadData)
