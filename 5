@@ -1,0 +1,273 @@
+========================================================
+CALENDAR UI POLISH
+Every property here is one your tenant already accepts.
+No Radius on Rectangle - not supported in your library.
+Apply in order. Section 1 first, it fixes real bugs.
+========================================================
+
+
+========================================================
+SECTION 1 - FIXES  (do these first)
+========================================================
+
+1.1  galCalendar -> TemplateSize
+     Self.Height / 6
+
+     Kills the stray 43rd cell below row 6 and evens out
+     the row heights.
+
+1.2  galWeekdays -> Width
+     galCalendar.Width
+
+     Header row currently stops short of SAT.
+
+1.3  galWeekdays -> X
+     galCalendar.X
+
+1.4  galCalendar -> Height
+     Parent.Height - Self.Y - 40
+
+     Only if 1.1 leaves a gap at the bottom.
+
+
+========================================================
+SECTION 2 - CALENDAR GRID
+========================================================
+
+2.1  recCellBg -> Fill
+If(
+    !ThisItem.InMonth,
+    RGBA(252, 253, 254, 1),
+    ThisItem.CellDate = Coalesce(varCalSelected, Today()),
+    RGBA(232, 242, 254, 1),
+    ThisItem.EvtCount > 0,
+    RGBA(243, 248, 255, 1),
+    ThisItem.IsToday,
+    RGBA(250, 252, 255, 1),
+    RGBA(255, 255, 255, 1)
+)
+
+     Softer wash than before. The accent bar carries the
+     colour instead of the whole cell shouting.
+     Weekend tint dropped - it fought with the event tint.
+
+2.2  recCellBg -> BorderColor
+     RGBA(237, 240, 244, 1)
+
+2.3  lblDayNum -> Size
+     11
+
+2.4  lblDayNum -> Color
+If(
+    ThisItem.CellDate = Coalesce(varCalSelected, Today()),
+    RGBA(255, 255, 255, 1),
+    !ThisItem.InMonth,
+    RGBA(199, 205, 214, 1),
+    ThisItem.IsToday,
+    RGBA(21, 101, 192, 1),
+    ThisItem.IsWeekend,
+    RGBA(148, 163, 184, 1),
+    RGBA(30, 41, 59, 1)
+)
+
+     Weekends now read as secondary via the number, not
+     the cell background.
+
+2.5  lblDayNum -> FontWeight
+If(
+    ThisItem.IsToday || ThisItem.CellDate = Coalesce(varCalSelected, Today()),
+    FontWeight.Bold,
+    FontWeight.Semibold
+)
+
+
+========================================================
+SECTION 3 - EVENT PILL
+========================================================
+
+3.1  recEvtPill -> Fill
+     RGBA(232, 240, 254, 1)
+
+3.2  recEvtPill -> Height
+     24
+
+3.3  recEvtAccent -> Width
+     3
+
+3.4  recEvtAccent -> Height
+     24
+
+3.5  recEvtAccent -> Fill
+     RGBA(21, 101, 192, 1)
+
+3.6  lblEvtTitle -> Height
+     24
+
+3.7  lblEvtTitle -> Size
+     9
+
+3.8  lblEvtTitle -> Color
+     RGBA(30, 58, 95, 1)
+
+3.9  lblEvtTitle -> FontWeight
+     FontWeight.Semibold
+
+3.10 lblEvtMore -> Color
+     RGBA(100, 116, 139, 1)
+
+
+========================================================
+SECTION 4 - WEEKDAY HEADER
+========================================================
+
+4.1  lblWeekday -> Fill
+     RGBA(248, 250, 252, 1)
+
+4.2  lblWeekday -> Color
+If(ThisItem.Wknd, RGBA(148, 163, 184, 1), RGBA(71, 85, 105, 1))
+
+4.3  lblWeekday -> Size
+     10
+
+4.4  galWeekdays -> Height
+     38
+
+4.5  galWeekdays -> TemplateSize
+     38
+
+4.6  lblWeekday -> Height
+     38
+
+     If you change 4.4-4.6, also push galCalendar.Y down
+     by 4 to match.
+
+
+========================================================
+SECTION 5 - HEADER AREA
+========================================================
+
+5.1  DELETE lblRegionPill and recRegionPill
+
+     The Region dropdown in the top bar already shows
+     EMEA. The pill floating mid-header is duplicate
+     information and it is what makes the header look
+     unbalanced.
+
+     If you would rather keep it, instead set:
+       recRegionPill -> X   Parent.Width - 320
+       recRegionPill -> Y   30
+       lblRegionPill -> X   Parent.Width - 320
+       lblRegionPill -> Y   30
+     so it sits beside Today / prev / next as a group.
+
+5.2  lblCalMonth -> Size
+     22
+
+5.3  lblCalMonth -> Color
+     RGBA(15, 23, 42, 1)
+
+     Near-black reads more considered than blue for a
+     page title, and lets the blue mean "interactive".
+
+5.4  lblCalSub -> Text
+     "Bi-weekly regional meeting notes and action items"
+
+5.5  lblCalSub -> Color
+     RGBA(100, 116, 139, 1)
+
+5.6  recHeaderRule -> Fill
+     RGBA(241, 245, 249, 1)
+
+
+========================================================
+SECTION 6 - FOOTER
+========================================================
+
+6.1  lblFooterSelected -> Size
+     10
+
+6.2  lblFooterSelected -> Color
+     RGBA(71, 85, 105, 1)
+
+6.3  lblFooterSelected -> Text
+"Selected: " & Text(Coalesce(varCalSelected, Today()), "dddd, d mmmm yyyy")
+
+6.4  lblFooterHint -> Text
+     "Click a date to add or edit notes"
+
+6.5  recFooterRule -> Fill
+     RGBA(241, 245, 249, 1)
+
+
+========================================================
+SECTION 7 - OPTIONAL: SHOW ACTION COUNT ON THE CALENDAR
+========================================================
+
+Right now every pill reads "EMEA Bi-Weekly Sync" because
+every meeting in a region has the same title. That text
+carries no information. Show the action count instead.
+
+7.1  lblLoadData -> OnSelect   (replace whole property)
+
+ClearCollect(
+    colMeetings,
+    Filter('Meeting Notes', Region = varCalRegion.Value)
+);
+ClearCollect(
+    colCalEvents,
+    ForAll(
+        colMeetings As M,
+        {
+            EventDate: DateValue(Text(M.'Meeting Date', "yyyy-mm-dd")),
+            Title: M.Title,
+            ActionCount: CountRows(M.'Meeting Action Items'),
+            OpenCount: CountRows(
+                Filter(
+                    M.'Meeting Action Items',
+                    Text('Status (psquad_status)') <> "Completed"
+                )
+            )
+        }
+    )
+)
+
+7.2  galCalendar -> Items
+     Inside the innermost record, add two lines after
+     TopTitle:
+
+        TopActions: First(_evts).ActionCount,
+        TopOpen: First(_evts).OpenCount,
+
+7.3  lblEvtTitle -> Text
+If(
+    ThisItem.TopActions > 0,
+    ThisItem.TopActions & If(ThisItem.TopActions = 1, " action", " actions"),
+    "Notes only"
+)
+
+7.4  recEvtAccent -> Fill
+If(
+    ThisItem.TopOpen > 0,
+    RGBA(245, 158, 11, 1),
+    RGBA(22, 163, 74, 1)
+)
+
+     Amber bar = open actions outstanding.
+     Green bar  = everything closed.
+     Now the calendar tells you where work is pending at
+     a glance, which is the actual point of the screen.
+
+
+========================================================
+NOTE ON ROUNDED CORNERS
+========================================================
+Rectangle@2.3.0 in your tenant has no Radius properties,
+so cards and pills stay square. Two ways round it if you
+want them rounded later:
+
+  - Image@2.2.3 supports RadiusTopLeft etc. An Image with
+    no image set and a Fill is a rounded rectangle.
+  - ModernTextInput@1.1.1 also exposes Radius.
+
+Both are workarounds. Square corners are consistent and
+fine - do this only if you decide it matters.
