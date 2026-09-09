@@ -26,3 +26,19 @@ ThisItem.StatusText
 
 
 LookUp(drpStatus.Items, Value = ThisItem.StatusText)
+
+
+
+If(
+    !ThisItem.InMonth,
+    RGBA(250, 251, 252, 1),
+    ThisItem.CellDate = Coalesce(varCalSelected, Today()),
+    RGBA(242, 248, 255, 1),
+    ThisItem.EvtCount > 0,
+    RGBA(219, 234, 254, 1),
+    ThisItem.IsToday,
+    RGBA(247, 251, 255, 1),
+    ThisItem.IsWeekend,
+    RGBA(253, 253, 254, 1),
+    RGBA(255, 255, 255, 1)
+)
