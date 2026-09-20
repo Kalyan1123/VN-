@@ -27,3 +27,21 @@ Set(
         ""
     )
 );
+
+
+
+
+
+Caption label → Height:
+
+If(varBig, 80, 40)
+
+If the label's Y formula subtracts a fixed number, it will drift when the height changes. Anchor it to its own height instead:
+
+Y = If(
+    varBig,
+    App.Height - Self.Height - 60,
+    Container8_12.Y + Video1.Y + Video1.Height - Self.Height - 40
+)
+
+Also set VerticalAlign = VerticalAlign.Middle so short lines sit centered in the taller box.
