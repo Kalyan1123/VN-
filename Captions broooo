@@ -14,3 +14,16 @@ IfError(
 Substitute(Substitute(locSelectedVideo.Name, "  ", " "), ".mp4", ".vtt")
 
   Substitute(locSelectedVideo.Name, "  ", " ") & ".vtt"
+
+
+
+Set(varVtt, "");
+Set(
+    varVtt,
+    IfError(
+        GetTranscript.Run(
+            Substitute(locSelectedVideo.Name, "  ", " ") & ".vtt"
+        ).vtttext,
+        ""
+    )
+);
