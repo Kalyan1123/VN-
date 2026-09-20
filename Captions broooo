@@ -8,3 +8,9 @@ IfError(
     ),
     Set(varVtt, "")
 );
+
+
+
+Substitute(Substitute(locSelectedVideo.Name, "  ", " "), ".mp4", ".vtt")
+
+  Substitute(locSelectedVideo.Name, "  ", " ") & ".vtt"
