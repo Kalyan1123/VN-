@@ -45,3 +45,18 @@ Y = If(
 )
 
 Also set VerticalAlign = VerticalAlign.Middle so short lines sit centered in the taller box.
+
+
+Width — estimated from character count
+Width = Min(
+    Len(Self.Text) * Self.Size * 0.55 + 40,
+    Video1.Width - 40
+)
+
+Keep it centered under the video:
+
+X = If(
+    varBig,
+    (App.Width - Self.Width) / 2,
+    Container8_12.X + Video1.X + (Video1.Width - Self.Width) / 2
+)
