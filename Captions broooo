@@ -1,0 +1,10 @@
+Set(varVtt, "");
+IfError(
+    Set(
+        varVtt,
+        GetTranscript.Run(
+            Substitute(Substitute(locSelectedVideo.Name, "  ", " "), ".mp4", ".vtt")
+        ).vtttext
+    ),
+    Set(varVtt, "")
+);
