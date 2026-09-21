@@ -87,3 +87,12 @@ How it behaves
 Mouse away: bar hidden, icon hidden.
 Mouse on the video: the native bar appears, and your icon is invisible but sitting over the native expand button.
 Mouse on the expand spot: your icon lights up, and a click goes to it, not the native one.
+
+
+
+
+
+X = Video1.X + Video1.Width - 60
+Y = Video1.Y + Video1.Height - 40
+Width = 40
+Height = 40
