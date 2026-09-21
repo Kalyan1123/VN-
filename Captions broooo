@@ -60,3 +60,30 @@ X = If(
     (App.Width - Self.Width) / 2,
     Container8_12.X + Video1.X + (Video1.Width - Self.Width) / 2
 )
+
+
+Steps
+
+1. Put it on top of the native icon. Container3:
+
+X = Container8_12.X + Video1.X + Video1.Width - 62
+Y = Container8_12.Y + Video1.Y + Video1.Height - 46
+Width = 40
+Height = 40
+Fill = RGBA(0, 0, 0, 0)
+
+Preview it, then change the 62 and 46 until your icon sits exactly over the native one.
+
+2. Keep it invisible until hovered. Icon1:
+
+Color      = RGBA(255, 255, 255, 0)
+HoverColor = RGBA(255, 255, 255, 1)
+Fill       = RGBA(0, 0, 0, 0)
+HoverFill  = RGBA(0, 0, 0, 0.6)
+
+3. Bring it to the front. In the tree view, Container3 must sit below Container8_12. Right-click it → Reorder → Bring to front.
+
+How it behaves
+Mouse away: bar hidden, icon hidden.
+Mouse on the video: the native bar appears, and your icon is invisible but sitting over the native expand button.
+Mouse on the expand spot: your icon lights up, and a click goes to it, not the native one.
