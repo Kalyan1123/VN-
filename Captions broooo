@@ -115,3 +115,26 @@ Height = Parent.Height
 Container3:
 
 BorderThickness = 0
+
+
+Fix: give each mode its own offset.
+
+Container3:
+
+X = Video1.X + Video1.Width - If(varBig, 110, 80)
+Y = Video1.Y + Video1.Height - If(varBig, 44, 40)
+
+Tune only the big-mode numbers (small already fits):
+
+Box still right of the icon → raise 110 (try 115, 120)
+Box left of the icon → lower it
+Box too high or low → adjust 44
+
+Change one number at a time, preview, check.
+
+Also cover a bit more so a click on the edge doesn't reach the native button:
+
+Width  = If(varBig, 48, 40)
+Height = If(varBig, 44, 40)
+
+Once the box lines up in both modes, set the border back to 0.
