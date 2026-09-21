@@ -96,3 +96,22 @@ X = Video1.X + Video1.Width - 60
 Y = Video1.Y + Video1.Height - 40
 Width = 40
 Height = 40
+
+Icon1:
+
+Color              = RGBA(0, 0, 0, 0)
+HoverColor         = RGBA(0, 0, 0, 0)
+PressedColor       = RGBA(0, 0, 0, 0)
+Fill               = RGBA(0, 0, 0, 0)
+HoverFill          = RGBA(0, 0, 0, 0)
+PressedFill        = RGBA(0, 0, 0, 0)
+BorderThickness    = 0
+FocusedBorderThickness = 0
+X = 0
+Y = 0
+Width  = Parent.Width
+Height = Parent.Height
+
+Container3:
+
+BorderThickness = 0
